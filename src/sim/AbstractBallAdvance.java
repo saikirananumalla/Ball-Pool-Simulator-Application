@@ -27,6 +27,10 @@ public abstract class AbstractBallAdvance implements BallAdvance {
 
     double dx = ball.getDx(), dy = ball.getDy();
 
+    if (dx == 0 && dy == 0){
+      return STATUS_STATIONARY;
+    }
+
     double x = ball.getPositionX(), y = ball.getPositionY(), r = ball.getRadius(), s = ball.getSpeed();
 
     double txr = Double.POSITIVE_INFINITY, txl = Double.POSITIVE_INFINITY, tx, tyt = Double.POSITIVE_INFINITY, tyb = Double.POSITIVE_INFINITY, ty, tStop, minT;

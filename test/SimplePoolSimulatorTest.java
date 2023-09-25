@@ -91,6 +91,19 @@ public class SimplePoolSimulatorTest {
     poolSimulatorSimple.start(50, 50, 60, 2, 1.0, 1.0);
   }
 
+  @Test
+  public void testSpeedZero() {
+    poolSimulatorSimple.start(50, 50, 10, 0, 1.0, 1.0);
+    assertEquals(STATUS + STATUS_SIMULATION_STARTED, poolSimulatorSimple.getStatus());
+    poolSimulatorSimple.advance();
+    assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testUnitDirectionZero() {
+    poolSimulatorSimple.start(50, 50, 10, 5, 0.0, 0.0);
+    assertEquals(STATUS + STATUS_SIMULATION_STARTED, poolSimulatorSimple.getStatus());
+  }
 
   @Test
   public void testSimplePhysicsAdvance() {

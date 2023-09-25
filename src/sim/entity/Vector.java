@@ -41,6 +41,9 @@ public class Vector {
    * Normalize the vector by dividing its coordinate with the rms value.
    */
   public void normalize() {
+    if (x == 0 && y == 0){
+      return;
+    }
     double rms = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     x /= rms;
     y /= rms;

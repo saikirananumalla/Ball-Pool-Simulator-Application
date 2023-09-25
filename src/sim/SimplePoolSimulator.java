@@ -48,7 +48,7 @@ public class SimplePoolSimulator implements PoolSimulator {
 
     if (radius < 0 || radius >= getTableHeight() || radius >= getTableWidth() || speed < 0
             || x < radius || y < radius || x > (getTableWidth() - radius)
-            || y > (getTableHeight() - radius)) {
+            || y > (getTableHeight() - radius) || (speed > 0 && dx == 0 && dy == 0)) {
       throw new IllegalArgumentException(INVALID_INPUT);
     }
 
