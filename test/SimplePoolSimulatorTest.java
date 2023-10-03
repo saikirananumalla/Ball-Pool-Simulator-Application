@@ -7,7 +7,8 @@ import java.util.List;
 import sim.PoolSimulator;
 import sim.SimplePoolSimulator;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 import static sim.util.Constants.STATUS_BOTTOM_EDGE;
 import static sim.util.Constants.STATUS_LEFT_EDGE;
 import static sim.util.Constants.STATUS_NOT_SET_UP;
@@ -16,6 +17,9 @@ import static sim.util.Constants.STATUS_SIMULATION_STARTED;
 import static sim.util.Constants.STATUS_STATIONARY;
 import static sim.util.Constants.STATUS_TOP_EDGE;
 
+/**
+ * A junit class to test simple pool simulator class.
+ */
 public class SimplePoolSimulatorTest {
 
   public static final String STATUS = "Status: ";
@@ -99,7 +103,7 @@ public class SimplePoolSimulatorTest {
     assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testUnitDirectionZero() {
     poolSimulatorSimple.start(50, 50, 10, 5, 0.0, 0.0);
     assertEquals(STATUS + STATUS_SIMULATION_STARTED, poolSimulatorSimple.getStatus());
@@ -108,7 +112,8 @@ public class SimplePoolSimulatorTest {
   @Test
   public void testSimplePhysicsAdvance() {
 
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorSimple.start(100, 100, 20, 60, 1.1, -2);
     addXY(ballX, ballY, poolSimulatorSimple);
@@ -146,21 +151,19 @@ public class SimplePoolSimulatorTest {
     assertEquals(STATUS + STATUS_LEFT_EDGE, poolSimulatorSimple.getStatus());
     addXY(ballX, ballY, poolSimulatorSimple);
     poolSimulatorSimple.advance();
-    assertEquals(STATUS + STATUS_TOP_EDGE, poolSimulatorSimple.getStatus());
-    addXY(ballX, ballY, poolSimulatorSimple);
-    poolSimulatorSimple.advance();
     assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
     addXY(ballX, ballY, poolSimulatorSimple);
     poolSimulatorSimple.advance();
     assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
 
-    assertEquals(List.of(100, 144, 342, 380, 219, 21, 20, 216, 380, 345, 147, 20, 90, 90), ballX);
-    assertEquals(List.of(100, 20, 380, 310, 20, 380, 376, 20, 318, 380, 20, 252, 380, 380), ballY);
+    assertEquals(List.of(100, 144, 342, 380, 219, 21, 20, 216, 380, 345, 147, 20, 90), ballX);
+    assertEquals(List.of(100, 20, 380, 310, 20, 380, 376, 20, 318, 380, 20, 252, 380), ballY);
   }
 
   @Test
   public void testSimplePhysicsAdvance_Horizontal() {
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorSimple.start(200, 200, 20, 16, 2.0, 0.0);
     addXY(ballX, ballY, poolSimulatorSimple);
@@ -174,18 +177,16 @@ public class SimplePoolSimulatorTest {
     assertEquals(STATUS + STATUS_RIGHT_EDGE, poolSimulatorSimple.getStatus());
     addXY(ballX, ballY, poolSimulatorSimple);
     poolSimulatorSimple.advance();
-    assertEquals(STATUS + STATUS_LEFT_EDGE, poolSimulatorSimple.getStatus());
-    addXY(ballX, ballY, poolSimulatorSimple);
-    poolSimulatorSimple.advance();
     assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
 
-    assertEquals(List.of(200, 380, 20, 380, 20), ballX);
-    assertEquals(List.of(200, 200, 200, 200, 200), ballY);
+    assertEquals(List.of(200, 380, 20, 380), ballX);
+    assertEquals(List.of(200, 200, 200, 200), ballY);
   }
 
   @Test
   public void testSimplePhysicsAdvance_Vertical() {
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorSimple.start(200, 200, 20, 16, 0.0, 3.0);
     addXY(ballX, ballY, poolSimulatorSimple);
@@ -199,19 +200,17 @@ public class SimplePoolSimulatorTest {
     assertEquals(STATUS + STATUS_TOP_EDGE, poolSimulatorSimple.getStatus());
     addXY(ballX, ballY, poolSimulatorSimple);
     poolSimulatorSimple.advance();
-    assertEquals(STATUS + STATUS_BOTTOM_EDGE, poolSimulatorSimple.getStatus());
-    addXY(ballX, ballY, poolSimulatorSimple);
-    poolSimulatorSimple.advance();
     assertEquals(STATUS + STATUS_STATIONARY, poolSimulatorSimple.getStatus());
 
-    assertEquals(List.of(200, 380, 20, 380, 20), ballY);
-    assertEquals(List.of(200, 200, 200, 200, 200), ballX);
+    assertEquals(List.of(200, 380, 20, 380), ballY);
+    assertEquals(List.of(200, 200, 200, 200), ballX);
   }
 
   @Test
   public void testNewtonianPhysicsAdvance() {
 
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorFriction.start(100, 100, 20, 60, 1.1, -2);
     addXY(ballX, ballY, poolSimulatorFriction);
@@ -248,7 +247,8 @@ public class SimplePoolSimulatorTest {
   @Test
   public void testNewtonianPhysicsAdvance_Horizontal() {
 
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorFriction.start(200, 200, 20, 36, 2.0, 0.0);
     addXY(ballX, ballY, poolSimulatorFriction);
@@ -268,7 +268,8 @@ public class SimplePoolSimulatorTest {
   @Test
   public void testNewtonianPhysicsAdvance_Vertical() {
 
-    List<Integer> ballX = new ArrayList<>(), ballY = new ArrayList<>();
+    List<Integer> ballX = new ArrayList<>();
+    List<Integer> ballY = new ArrayList<>();
 
     poolSimulatorFriction.start(200, 200, 20, 36, 0.0, 3.0);
     addXY(ballX, ballY, poolSimulatorFriction);

@@ -4,8 +4,10 @@ package sim;
  * An implementation of BallAdvance following simple physics.
  */
 public class SimpleBallAdvance extends AbstractBallAdvance {
+
   @Override
-  protected double getEdgeCollisionTime(double speed, double unitDirection, double pOld, double pNew) {
+  protected double getEdgeCollisionTime(double speed, double unitDirection,
+                                        double pOld, double pNew) {
     return (pNew - pOld) / (speed * unitDirection);
   }
 

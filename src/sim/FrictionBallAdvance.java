@@ -8,10 +8,11 @@ public class FrictionBallAdvance extends AbstractBallAdvance {
   /**
    * Coefficient of friction multiplied by the gravity.
    */
-  private final static double acc = 0.981;
+  private static final double acc = 0.981;
 
   @Override
-  protected double getEdgeCollisionTime(double speed, double unitDirection, double pOld, double pNew) {
+  protected double getEdgeCollisionTime(double speed, double unitDirection,
+                                        double pOld, double pNew) {
     return getRoot((acc * unitDirection) / 2, (-speed * unitDirection), (pNew - pOld));
   }
 

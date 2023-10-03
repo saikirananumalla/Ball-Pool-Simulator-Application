@@ -3,6 +3,9 @@ package sim;
 import sim.entity.Ball;
 import sim.entity.Table;
 
+/**
+ * An interface to implement the advancing of the ball on a given table.
+ */
 public interface BallAdvance {
 
   /**
@@ -10,8 +13,7 @@ public interface BallAdvance {
    *
    * @param ball  Ball
    * @param table Table
-   * @return status of the ball based on the simulation status
    */
-  String advance(Ball ball, Table table);
+  void advance(Ball ball, Table table);
 
 }

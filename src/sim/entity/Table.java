@@ -9,15 +9,19 @@ public class Table {
 
   private final int y;
 
+  private final TableType type;
+
   /**
    * Create table entity with given xMax and yMax values.
    *
-   * @param x xMax of the table rectangle
-   * @param y yMax of the table rectangle
+   * @param x    xMax of the table rectangle
+   * @param y    yMax of the table rectangle
+   * @param type type of the table whether simple or friction
    */
-  public Table(int x, int y) {
+  public Table(int x, int y, String type) {
     this.x = x;
     this.y = y;
+    this.type = TableType.getByString(type);
   }
 
   /**
@@ -38,4 +42,7 @@ public class Table {
     return y;
   }
 
+  public TableType getType() {
+    return type;
+  }
 }

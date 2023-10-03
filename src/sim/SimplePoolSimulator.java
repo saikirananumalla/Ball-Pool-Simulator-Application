@@ -3,22 +3,18 @@ package sim;
 import java.util.List;
 
 import sim.entity.Ball;
+import sim.entity.BallStatus;
 import sim.entity.Table;
+import sim.entity.TableType;
 
 import static sim.util.Constants.FRICTION;
 import static sim.util.Constants.INVALID_INPUT;
 import static sim.util.Constants.SIMPLE;
-import static sim.util.Constants.STATUS_NOT_SET_UP;
-import static sim.util.Constants.STATUS_SIMULATION_STARTED;
-import static sim.util.Constants.STATUS_STATIONARY;
 
 /**
  * A class to implement the PoolSimulator interface.
  */
 public class SimplePoolSimulator implements PoolSimulator {
-  private String status;
-
-  private final String type;
 
   private Ball ball;
 
@@ -37,9 +33,7 @@ public class SimplePoolSimulator implements PoolSimulator {
       throw new IllegalArgumentException(INVALID_INPUT);
     }
 
-    table = new Table(width, height);
-    this.type = type;
-    status = STATUS_NOT_SET_UP;
+    table = new Table(width, height, type);
   }
 
   @Override
@@ -53,17 +47,16 @@ public class SimplePoolSimulator implements PoolSimulator {
     }
 
     ball = new Ball(x, y, radius, dx, dy, speed);
-    status = STATUS_SIMULATION_STARTED;
   }
 
   @Override
   public void advance() {
-    if (STATUS_STATIONARY.equals(status)) {
+    if (ball == null || BallStatus.STATUS_STATIONARY.asString().equals(ball.getStatus())) {
       return;
     }
 
-    BallAdvance advance = getBallAdvance(type);
-    status = advance.advance(ball, table);
+    BallAdvance advance = getBallAdvance(table.getType());
+    advance.advance(ball, table);
   }
 
   @Override
@@ -103,11 +96,12 @@ public class SimplePoolSimulator implements PoolSimulator {
 
   @Override
   public String getStatus() {
-    return String.format("Status: %s", status);
+    return ball == null ? String.format("Status: %s", BallStatus.STATUS_NOT_SET_UP.asString())
+            : String.format("Status: %s", ball.getStatus());
   }
 
-  private BallAdvance getBallAdvance(String type) {
-    if (type.equals(SIMPLE)) {
+  private BallAdvance getBallAdvance(TableType type) {
+    if (type.equals(TableType.SIMPLE)) {
       return new SimpleBallAdvance();
     }
     return new FrictionBallAdvance();

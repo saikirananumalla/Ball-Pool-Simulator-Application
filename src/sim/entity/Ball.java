@@ -15,6 +15,8 @@ public class Ball {
 
   private double speed;
 
+  private BallStatus status;
+
   /**
    * Create a ball object with normalized direction vector.
    *
@@ -26,7 +28,8 @@ public class Ball {
    * @param speed  speed of the ball
    * @throws IllegalArgumentException if any values are invalid
    */
-  public Ball(int x, int y, int radius, double dx, double dy, int speed) throws IllegalArgumentException {
+  public Ball(int x, int y, int radius, double dx, double dy, int speed)
+          throws IllegalArgumentException {
 
     if (radius < 0 || speed < 0 || x < 0 || y < 0) {
       throw new IllegalArgumentException(INVALID_INPUT);
@@ -34,9 +37,10 @@ public class Ball {
 
     this.radius = radius;
     this.speed = speed;
-    position = new Vector(x, y);
-    d = new Vector(dx, dy);
+    this.position = new Vector(x, y);
+    this.d = new Vector(dx, dy);
     d.normalize();
+    this.status = BallStatus.STATUS_SIMULATION_STARTED;
   }
 
   /**
@@ -148,7 +152,7 @@ public class Ball {
   }
 
   /**
-   * Gets the velocity of the ball along y-axis
+   * Gets the velocity of the ball along y-axis.
    *
    * @return Vy
    */
@@ -156,4 +160,11 @@ public class Ball {
     return getSpeed() * getDy();
   }
 
+  public String getStatus() {
+    return status.asString();
+  }
+
+  public void setStatus(BallStatus status) {
+    this.status = status;
+  }
 }

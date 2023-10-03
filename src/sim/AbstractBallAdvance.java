@@ -1,13 +1,8 @@
 package sim;
 
 import sim.entity.Ball;
+import sim.entity.BallStatus;
 import sim.entity.Table;
-
-import static sim.util.Constants.STATUS_BOTTOM_EDGE;
-import static sim.util.Constants.STATUS_LEFT_EDGE;
-import static sim.util.Constants.STATUS_RIGHT_EDGE;
-import static sim.util.Constants.STATUS_STATIONARY;
-import static sim.util.Constants.STATUS_TOP_EDGE;
 
 /**
  * A class to abstract the advance the ball to next position.
@@ -15,27 +10,41 @@ import static sim.util.Constants.STATUS_TOP_EDGE;
 public abstract class AbstractBallAdvance implements BallAdvance {
 
   @Override
-  public String advance(Ball ball, Table table) {
+  public void advance(Ball ball, Table table) {
 
     if (ball.getSpeed() <= 0) {
-      return STATUS_STATIONARY;
+      ball.setStatus(BallStatus.STATUS_STATIONARY);
+      return;
     }
 
-    String status;
+    double xMax = table.getXMax();
+    double yMax = table.getYMax();
 
-    double xMax = table.getXMax(), yMax = table.getYMax();
+    double dx = ball.getDx();
+    double dy = ball.getDy();
 
-    double dx = ball.getDx(), dy = ball.getDy();
-
-    if (dx == 0 && dy == 0){
-      return STATUS_STATIONARY;
+    if (dx == 0 && dy == 0) {
+      ball.setStatus(BallStatus.STATUS_STATIONARY);
+      return;
     }
 
-    double x = ball.getPositionX(), y = ball.getPositionY(), r = ball.getRadius(), s = ball.getSpeed();
+    double x = ball.getPositionX();
+    double y = ball.getPositionY();
+    double r = ball.getRadius();
+    double s = ball.getSpeed();
 
-    double txr = Double.POSITIVE_INFINITY, txl = Double.POSITIVE_INFINITY, tx, tyt = Double.POSITIVE_INFINITY, tyb = Double.POSITIVE_INFINITY, ty, tStop, minT;
+    double txr = Double.POSITIVE_INFINITY;
+    double txl = Double.POSITIVE_INFINITY;
 
-    double adx = Math.abs(dx), ady = Math.abs(dy);
+    double tx;
+    double tyt = Double.POSITIVE_INFINITY;
+    double tyb = Double.POSITIVE_INFINITY;
+    double ty;
+    double tStop;
+    double minT;
+
+    double adx = Math.abs(dx);
+    double ady = Math.abs(dy);
 
     if (dx > 0) {
       txr = getEdgeCollisionTime(s, adx, x, xMax - r);
@@ -57,21 +66,21 @@ public abstract class AbstractBallAdvance implements BallAdvance {
 
     if (tStop < tx && tStop < ty) {
       minT = tStop;
-      status = STATUS_STATIONARY;
+      ball.setStatus(BallStatus.STATUS_STATIONARY);
     } else {
       if (tx < ty) {
         minT = tx;
         if (txl > txr) {
-          status = STATUS_RIGHT_EDGE;
+          ball.setStatus(BallStatus.STATUS_RIGHT_EDGE);
         } else {
-          status = STATUS_LEFT_EDGE;
+          ball.setStatus(BallStatus.STATUS_LEFT_EDGE);
         }
       } else {
         minT = ty;
         if (tyb > tyt) {
-          status = STATUS_TOP_EDGE;
+          ball.setStatus(BallStatus.STATUS_TOP_EDGE);
         } else {
-          status = STATUS_BOTTOM_EDGE;
+          ball.setStatus(BallStatus.STATUS_BOTTOM_EDGE);
         }
       }
     }
@@ -87,7 +96,9 @@ public abstract class AbstractBallAdvance implements BallAdvance {
 
     ball.setSpeed(s - getSpeedDampFactor(minT));
 
-    return status;
+    if (ball.getSpeed() <= 0) {
+      ball.setStatus(BallStatus.STATUS_STATIONARY);
+    }
   }
 
   /**
@@ -99,8 +110,8 @@ public abstract class AbstractBallAdvance implements BallAdvance {
    * @param pNew          final point
    * @return time
    */
-  protected abstract double getEdgeCollisionTime(double speed, double unitDirection
-          , double pOld, double pNew);
+  protected abstract double getEdgeCollisionTime(double speed, double unitDirection,
+                                                 double pOld, double pNew);
 
   /**
    * Gets the time for ball to stop on the table.

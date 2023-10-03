@@ -18,11 +18,12 @@ public interface PoolSimulator {
    * @param dy     unit vertical direction of movement
    * @throws IllegalArgumentException if inputs are invalid
    */
-  void start(int x, int y, int radius, int speed, double dx, double dy) throws IllegalArgumentException;
+  void start(int x, int y, int radius, int speed, double dx,
+             double dy) throws IllegalArgumentException;
 
 
   /**
-   * Advances the simulation by one discrete step (to the next bounce, or the ball stopping)
+   * Advances the simulation by one discrete step (to the next bounce, or the ball stopping).
    */
   void advance();
 
